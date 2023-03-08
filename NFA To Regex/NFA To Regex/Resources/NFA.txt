@@ -1,1 +1,27 @@
-﻿//nfa data structure
+﻿q10 q0 q1q2 q3q4 q5 q6 q7q8 q9 q11q22 q20 q12 q13q14 q15 q18 q16 q17 q19 q21 q23
+a b c
+q10
+q23
+q0 a q1q2
+q1q2 b q3q4
+q3q4 a q5
+q6 a q7q8
+q7q8 a q9
+q10 # q0
+q10 # q6
+q5 # q11q22
+q9 # q11q22
+q12 a q13q14
+q13q14 b q15
+q16 c q17
+q18 # q16
+q17 # q19
+q18 # q19
+q20 # q12
+q20 # q18
+q15 # q21
+q19 # q21
+q11q22 # q20
+q21 # q23
+q11q22 # q23
+q21 # q20
