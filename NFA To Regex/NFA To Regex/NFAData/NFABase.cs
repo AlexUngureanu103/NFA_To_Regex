@@ -1,6 +1,6 @@
-﻿namespace NFA_To_Regex
+﻿namespace NFA_To_Regex.NFAData
 {
-    internal class NFA
+    public class NFABase
     {
         public char Lambda = 'λ';
 
