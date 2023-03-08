@@ -1,4 +1,6 @@
 ﻿
+using NFA_To_Regex.NFAData;
+
 namespace NFA_To_Regex
 {
     class Program
@@ -7,14 +9,18 @@ namespace NFA_To_Regex
         {
             while (true)
             {
-                try
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    DisplayError(ex);
-                }
+                //try
+                //{
+                NFA nfa = new NFA();
+                nfa.LoadFile();
+                ConvertNFAToDFA converter = new ConvertNFAToDFA();
+                nfa = converter.FromAFNLambdaToAFD(nfa);
+                nfa.PrintAutomate();
+                //}
+                //catch (Exception ex)
+                //{
+                //    DisplayError(ex);
+                //}
                 Pause();
             }
         }
@@ -36,3 +42,4 @@ namespace NFA_To_Regex
         }
 
     }
+}
