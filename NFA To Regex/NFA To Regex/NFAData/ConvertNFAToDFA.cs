@@ -113,26 +113,26 @@
                                     i++;
                                 }
 
-                                for (i = 0; i < finalStatesAFN[0].Length; i++)
+                                for (ushort ij = 0; ij < finalStatesAFN[0].Length; ij++)
                                 {
-                                    while (i < finalStatesAFN[0].Length && !char.IsDigit(finalStatesAFN[0][i]))
+                                    while (ij < finalStatesAFN[0].Length && !char.IsDigit(finalStatesAFN[0][ij]))
                                     {
-                                        aux2 += finalStatesAFN[0][i];
-                                        i++;
+                                        aux2 += finalStatesAFN[0][ij];
+                                        ij++;
                                     }
-                                    while (i < finalStatesAFN[0].Length && char.IsDigit(finalStatesAFN[0][i]))
+                                    while (ij < finalStatesAFN[0].Length && char.IsDigit(finalStatesAFN[0][ij]))
                                     {
-                                        aux2 += finalStatesAFN[0][i];
-                                        i++;
+                                        aux2 += finalStatesAFN[0][ij];
+                                        ij++;
                                     }
                                     if (aux == aux2)
                                     {
                                         break;
                                     }
                                     aux2 = "";
-                                    if (i < finalStatesAFN[0].Length)
+                                    if (ij < finalStatesAFN[0].Length)
                                     {
-                                        aux2 += finalStatesAFN[0][i];
+                                        aux2 += finalStatesAFN[0][ij];
                                     }
                                 }
                                 if (aux == aux2)
