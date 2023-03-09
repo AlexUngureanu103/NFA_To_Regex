@@ -17,7 +17,7 @@
                 transitionsLambda.ForEach(transition =>
                 {
                     string currState = transition.FromState;
-                    char character = transition.Symbol;
+                    char character = transition.Symbol[0];
                     string nextState = transition.ToState;
                     string aux = "";
                     for (ushort i = 0; i < firstState.Length; i++)
@@ -61,7 +61,12 @@
 
             var transitionsLambdaAFN = automatLambda.Transitions;
             var states = automatLambda.States;
-            var alphabetCharacters = automatLambda.Alphabet;
+            List<char> alphabetCharacters = new List<char>();
+            //automatLambda.Alphabet;
+            foreach (var alph in automatLambda.Alphabet)
+            {
+                alphabetCharacters.Add(alph[0]);
+            }
             var finalStatesAFN = automatLambda.FinalStates;
 
             bool ok;
@@ -92,7 +97,7 @@
                         {
                             if (i != stateIndex && current == statesBeforeLambda[i])
                             {
-                                transitionsAFD.Add(new Transition(AFDStates[stateIndex], alphabetChar, AFDStates[i]));
+                                transitionsAFD.Add(new Transition(AFDStates[stateIndex], alphabetChar + string.Empty, AFDStates[i]));
                                 ok = false;
                                 break;
                             }
@@ -145,7 +150,7 @@
 
                             AFDStates.Add(stateSymbol.ToString());
                             stateSymbol++;
-                            transitionsAFD.Add(new Transition(AFDStates[stateIndex], alphabetChar, AFDStates[AFDStates.Count - 1]));
+                            transitionsAFD.Add(new Transition(AFDStates[stateIndex], alphabetChar + string.Empty, AFDStates[AFDStates.Count - 1]));
                         }
                     }
                 }
@@ -153,10 +158,10 @@
             }
 
             NFA DFA = new NFA();
-            List<char> AFDalphabet = new List<char>();
+            List<string> AFDalphabet = new List<string>();
             foreach (var character in alphabetCharacters)
             {
-                AFDalphabet.Add(character);
+                AFDalphabet.Add(character + string.Empty);
             }
             DFA.Alphabet = AFDalphabet;
             DFA.States = AFDStates;

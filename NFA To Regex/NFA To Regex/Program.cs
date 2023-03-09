@@ -17,6 +17,9 @@ namespace NFA_To_Regex
                 ConvertNFAToDFA converter = new ConvertNFAToDFA();
                 NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
                 nfa1.PrintAutomate();
+                TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
+                transformNFAToRegex.TransformNFAinToRegex(nfa);
+
                 //}
                 //catch (Exception ex)
                 //{

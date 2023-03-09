@@ -10,7 +10,7 @@ namespace NFA_To_Regex.NFAData
         public NFA()
         {
             States = new List<string>();
-            Alphabet = new List<char>();
+            Alphabet = new List<string>();
             Transitions = new List<Transition>();
             FinalStates = new List<string>();
         }
@@ -19,7 +19,7 @@ namespace NFA_To_Regex.NFAData
         {
             if (States == null)
             {
-                throw new EmptyAutomateExceptions();
+                throw new EmptyAutomateException();
             }
         }
 
@@ -34,10 +34,10 @@ namespace NFA_To_Regex.NFAData
             {
                 states.Add(state);
             }
-            List<char> alphabet = new List<char>();
+            List<string> alphabet = new List<string>();
             foreach (string symbol in lines[1].Split(' '))
             {
-                alphabet.Add(symbol[0]);
+                alphabet.Add(symbol);
             }
             string initialState = lines[2].Split(' ')[0];
 
@@ -52,7 +52,7 @@ namespace NFA_To_Regex.NFAData
                 Transition transition = new Transition();
                 string[] line = lines[i].Split(' ');
                 transition.FromState = line[0];
-                transition.Symbol = line[1][0];
+                transition.Symbol = line[1];
                 transition.ToState = line[2];
                 transitions.Add(transition);
             }
@@ -92,9 +92,9 @@ namespace NFA_To_Regex.NFAData
                 this.States = nfaBase.States;
                 foreach (Transition transition in nfaBase.Transitions)
                 {
-                    if (transition.Symbol == '#')
+                    if (transition.Symbol == "#")
                     {
-                        transition.Symbol = nfaBase.Lambda;
+                        transition.Symbol = nfaBase.Lambda.ToString();
                     }
                 }
                 this.Transitions = nfaBase.Transitions;
