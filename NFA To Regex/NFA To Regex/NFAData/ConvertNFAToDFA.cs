@@ -2,7 +2,7 @@
 {
     internal class ConvertNFAToDFA
     {
-        public void FindNextStates(string initial, List<Transition> transitionsLambda, char alphabetCharacter)
+        public string FindNextStates(string initial, List<Transition> transitionsLambda, char alphabetCharacter)
         {
             Stack<string> states = new Stack<string>();
             states.Push(initial);
@@ -46,6 +46,8 @@
                     }
                 });
             }
+
+            return initial;
         }
 
         public NFA FromAFNLambdaToAFD(NFA automatLambda)
@@ -69,7 +71,7 @@
             initial = automatLambda.StartState;
             statesBeforeLambda.Add(initial);
             Queue<string> unexploredStates = new Queue<string>();
-            FindNextStates(initial, transitionsLambdaAFN, automatLambda.Lambda);
+            initial = FindNextStates(initial, transitionsLambdaAFN, automatLambda.Lambda);
             AFDStates.Add(stateSymbol.ToString());
             stateSymbol++;
 
@@ -82,7 +84,7 @@
                 foreach (var alphabetChar in alphabetCharacters)
                 {
                     current = initial;
-                    FindNextStates(current, transitionsLambdaAFN, alphabetChar);
+                    current = FindNextStates(current, transitionsLambdaAFN, alphabetChar);
                     if (!string.IsNullOrEmpty(current))
                     {
                         ok = true;
@@ -98,7 +100,7 @@
                         if (ok)
                         {
                             statesBeforeLambda.Add(current);
-                            FindNextStates(current, transitionsLambdaAFN, 'λ');
+                            current = FindNextStates(current, transitionsLambdaAFN, 'λ');
                             unexploredStates.Enqueue(current);
 
                             aux = "";

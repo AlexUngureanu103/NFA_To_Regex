@@ -13,9 +13,10 @@ namespace NFA_To_Regex
                 //{
                 NFA nfa = new NFA();
                 nfa.LoadFile();
-                ConvertNFAToDFA converter = new ConvertNFAToDFA();
-                nfa = converter.FromAFNLambdaToAFD(nfa);
                 nfa.PrintAutomate();
+                ConvertNFAToDFA converter = new ConvertNFAToDFA();
+                NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
+                nfa1.PrintAutomate();
                 //}
                 //catch (Exception ex)
                 //{

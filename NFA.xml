@@ -36,7 +36,7 @@
     <Transition>
       <FromState>q1q2</FromState>
       <ToState>q3q4</ToState>
-      <Symbol>113</Symbol>
+      <Symbol>98</Symbol>
     </Transition>
     <Transition>
       <FromState>q3q4</FromState>
