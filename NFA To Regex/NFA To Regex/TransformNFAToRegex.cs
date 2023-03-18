@@ -22,6 +22,7 @@ namespace NFA_To_Regex
             HandleTransitionsWithMultipleSymbols();
             HandleTransitionLoopsItSelf();
             HandleTransitionLoopsItSelf();
+            HandleQ0ToQ1ToQ0();
             NFAAutomate.PrintAutomate();
             return regex;
         }
@@ -65,6 +66,20 @@ namespace NFA_To_Regex
                 if (NFAAutomate.Transitions[index].FromState == NFAAutomate.Transitions[index].ToState && !NFAAutomate.Transitions[index].Symbol.Contains("*"))
                 {
                     NFAAutomate.Transitions[index].Symbol += '*';
+                }
+            }
+        }
+
+        private void HandleQ0ToQ1ToQ0()
+        {
+            for (int index = 0; index < NFAAutomate.Transitions.Count; index++)
+            {
+                for (int index2 = 0; index2 < NFAAutomate.Transitions.Count; index2++)
+                {
+                    if (NFAAutomate.Transitions[index] != NFAAutomate.Transitions[index2] && NFAAutomate.Transitions[index].ToState == NFAAutomate.Transitions[index].FromState)
+                    {
+
+                    }
                 }
             }
         }

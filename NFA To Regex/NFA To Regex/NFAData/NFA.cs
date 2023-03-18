@@ -80,6 +80,46 @@ namespace NFA_To_Regex.NFAData
         //    }
         //}
 
+        private void MakeFinalStateUnique()
+        {
+            if (this.FinalStates.Count >= 1)
+            {
+                string finalState = "FINAL";
+                foreach (string state in FinalStates)
+                {
+                    Transition transition = new()
+                    {
+                        FromState = state,
+                        Symbol = string.Empty + this.Lambda,
+                        ToState = finalState
+                    };
+                    this.Transitions.Add(transition);
+                }
+                States.Add(finalState);
+                FinalStates.Clear();
+                FinalStates.Add(finalState);
+            }
+            else
+                throw new ArgumentException("The automate must include a final state");
+        }
+
+        private void MakeInitialStateUnique()
+        {
+            if (this.StartState == null)
+                throw new ArgumentException("The automate must incldue a start state");
+            string initialState = "INIT";
+            Transition transition = new()
+            {
+                FromState = initialState,
+                Symbol = string.Empty + this.Lambda,
+                ToState = StartState
+            };
+            States.Add(initialState);
+            Transitions.Add(transition);
+            StartState = initialState;
+        }
+
+
         public void LoadFile()
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(NFABase));
@@ -100,6 +140,8 @@ namespace NFA_To_Regex.NFAData
                 this.Transitions = nfaBase.Transitions;
                 this.FinalStates = nfaBase.FinalStates;
             }
+            MakeFinalStateUnique();
+            MakeInitialStateUnique();
         }
 
         public void PrintAutomate()
@@ -109,8 +151,8 @@ namespace NFA_To_Regex.NFAData
             //gamma = letter gamma
             char gamma = 'D';
             displayBase.DisplayLine("Finite Automate : ", ConsoleColor.Gray);
-            displayBase.DisplayLine($"Format : M=({{States}}, {{Alphabet}}, {gamma}, StartState, {{FinalStates}})",ConsoleColor.Gray);
-            displayBase.DisplayLine($"M =({{ {string.Join(", ",this.States)}}} ,{{{string.Join(", ", this.Alphabet)}}} ,{gamma} ,{this.StartState} ,{{{string.Join(", ", this.FinalStates)}}}) cu D:", ConsoleColor.White);
+            displayBase.DisplayLine($"Format : M=({{States}}, {{Alphabet}}, {gamma}, StartState, {{FinalStates}})", ConsoleColor.Gray);
+            displayBase.DisplayLine($"M =({{ {string.Join(", ", this.States)}}} ,{{{string.Join(", ", this.Alphabet)}}} ,{gamma} ,{this.StartState} ,{{{string.Join(", ", this.FinalStates)}}}) cu D:", ConsoleColor.White);
             foreach (Transition transition in this.Transitions)
             {
                 displayBase.DisplayLine($"{gamma}({transition.FromState} ,{transition.Symbol} ,{transition.ToState})", ConsoleColor.White);
