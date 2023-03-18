@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace NFA_To_Regex.NFAData
 {
+    /*https://www.codingninjas.com/codestudio/library/nfa-to-regular-expression*/
     internal class NFA : NFABase
     {
         private string filePath = @"Resources\NFA.xml";
@@ -13,6 +14,51 @@ namespace NFA_To_Regex.NFAData
             Alphabet = new List<string>();
             Transitions = new List<Transition>();
             FinalStates = new List<string>();
+        }
+
+        public bool VerifyAutomaton()
+        {
+            if (States.Count == 0 || Alphabet.Count == 0 || FinalStates.Count == 0)
+            {
+                return false;
+            }
+            if (!States.Contains(StartState))
+            {
+                return false;
+            }
+            foreach (var finState in FinalStates)
+            {
+                if (!States.Contains(finState))
+                {
+                    return false;
+                }
+            }
+            if (!CheckTransitions())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckTransitions()
+        {
+            foreach (var transition in Transitions)
+            {
+                if (!States.Contains(transition.FromState))
+                {
+                    return false;
+                }
+                if (!States.Contains(transition.ToState))
+                {
+                    return false;
+                }
+                if (!Alphabet.Contains(transition.Symbol) && transition.Symbol != string.Empty + this.Lambda)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public void TransformNFAToDFA()
@@ -139,6 +185,10 @@ namespace NFA_To_Regex.NFAData
                 }
                 this.Transitions = nfaBase.Transitions;
                 this.FinalStates = nfaBase.FinalStates;
+            }
+            if (!VerifyAutomaton())
+            {
+                throw new ArgumentException("The given automate is Invalid.");
             }
             MakeFinalStateUnique();
             MakeInitialStateUnique();
