@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <NFABase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Lambda>955</Lambda>
   <States>
     <string>q1</string>
     <string>q2</string>
     <string>q3</string>
-    <string>q4</string>
   </States>
   <Alphabet>
     <string>a</string>
@@ -18,44 +17,35 @@
       <Symbol>a</Symbol>
     </Transition>
     <Transition>
-      <FromState>q2</FromState>
+      <FromState>q1</FromState>
       <ToState>q1</ToState>
-      <Symbol>a</Symbol>
+      <Symbol>b</Symbol>
     </Transition>
     <Transition>
       <FromState>q1</FromState>
       <ToState>q3</ToState>
-      <Symbol>b</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q2</FromState>
       <ToState>q3</ToState>
+      <Symbol>b</Symbol>
+    </Transition>
+    <Transition>
+      <FromState>q3</FromState>
+      <ToState>q2</ToState>
       <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q3</FromState>
-      <ToState>q3</ToState>
+      <ToState>q1</ToState>
       <Symbol>b</Symbol>
-    </Transition>
-    <Transition>
-      <FromState>q3</FromState>
-      <ToState>q4</ToState>
-      <Symbol>b</Symbol>
-    </Transition>
-    <Transition>
-      <FromState>q4</FromState>
-      <ToState>q3</ToState>
-      <Symbol>a</Symbol>
-    </Transition>
-    <Transition>
-      <FromState>q4</FromState>
-      <ToState>q2</ToState>
-      <Symbol>a</Symbol>
     </Transition>
   </Transitions>
   <StartState>q1</StartState>
   <FinalStates>
     <string>q3</string>
-    <string>q4</string>
+    <string>q2</string>
+    <string>q1</string>
   </FinalStates>
 </NFABase>

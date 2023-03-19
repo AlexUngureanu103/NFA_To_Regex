@@ -165,11 +165,11 @@ namespace NFA_To_Regex.NFAData
             StartState = initialState;
         }
 
-
-        public void LoadFile()
+        
+        public void LoadFile(string filepath)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(NFABase));
-            using (StreamReader reader = new StreamReader(filePath))
+            using (StreamReader reader = new StreamReader(filepath))
             {
                 NFABase nfaBase = (NFABase)xmlSerializer.Deserialize(reader);
 

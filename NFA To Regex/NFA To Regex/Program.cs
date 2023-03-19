@@ -12,7 +12,7 @@ namespace NFA_To_Regex
                 //try
                 //{
                 NFA nfa = new NFA();
-                nfa.LoadFile();
+                nfa.LoadFile(args[0]);
                 //nfa.PrintAutomate();
                 ConvertNFAToDFA converter = new ConvertNFAToDFA();
                 NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);

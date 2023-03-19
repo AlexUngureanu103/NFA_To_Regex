@@ -52,7 +52,6 @@
       <ToState>q2</ToState>
       <Symbol>a</Symbol>
     </Transition>
-  </Transitions>
   <StartState>q1</StartState>
   <FinalStates>
     <string>q3</string>

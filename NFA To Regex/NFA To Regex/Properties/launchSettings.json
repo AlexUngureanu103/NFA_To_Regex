@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NFA To Regex": {
+      "commandName": "Project",
+      "commandLineArgs": "\"Resources\\Exemple6.xml\""
+    }
+  }
+}

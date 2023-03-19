@@ -17,7 +17,7 @@ namespace NFA_To_Regex
                 throw new EmptyAutomateException();
             }
             string regex = string.Empty;
-            NFAAutomate.Transitions[17].ToState = NFAAutomate.Transitions[17].FromState;
+            //NFAAutomate.Transitions[17].ToState = NFAAutomate.Transitions[17].FromState;
             //NFAAutomate.Transitions[17].Symbol = "c";
             HandleTransitionsWithMultipleSymbols();
             HandleTransitionLoopsItSelf();
@@ -65,7 +65,7 @@ namespace NFA_To_Regex
             {
                 if (NFAAutomate.Transitions[index].FromState == NFAAutomate.Transitions[index].ToState && !NFAAutomate.Transitions[index].Symbol.Contains("*"))
                 {
-                    NFAAutomate.Transitions[index].Symbol += '*';
+                    NFAAutomate.Transitions[index].Symbol = '(' + NFAAutomate.Transitions[index].Symbol + ")*";
                 }
             }
         }
