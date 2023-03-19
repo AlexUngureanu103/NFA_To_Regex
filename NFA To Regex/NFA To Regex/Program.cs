@@ -5,6 +5,10 @@ namespace NFA_To_Regex
 {
     class Program
     {
+        /// <summary>
+        /// `Main` is the entry point of the program.
+        /// </summary>
+        /// <param name="args"> There are currently 6 available examples, with possible more to come. To change them , use another index from args</param>
         static void Main(string[] args)
         {
             while (true)
@@ -12,11 +16,11 @@ namespace NFA_To_Regex
                 //try
                 //{
                 NFA nfa = new NFA();
-                nfa.LoadFile(args[0]);
+                nfa.LoadFile(args[5]);
                 //nfa.PrintAutomate();
-                ConvertNFAToDFA converter = new ConvertNFAToDFA();
-                NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
-                nfa1.PrintAutomate();
+                //ConvertNFAToDFA converter = new ConvertNFAToDFA();
+                //NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
+                //nfa1.PrintAutomate();
                 TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
                 transformNFAToRegex.TransformNFAinToRegex(nfa);
 
