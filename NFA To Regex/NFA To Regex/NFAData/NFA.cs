@@ -207,7 +207,6 @@ namespace NFA_To_Regex.NFAData
             {
                 displayBase.DisplayLine($"{gamma}({transition.FromState} ,{transition.Symbol} ,{transition.ToState})", ConsoleColor.White);
             }
-
         }
     }
 }
