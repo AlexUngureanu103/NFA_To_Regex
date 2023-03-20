@@ -13,22 +13,22 @@ namespace NFA_To_Regex
         {
             while (true)
             {
-                //try
-                //{
-                NFA nfa = new NFA();
-                nfa.LoadFile(args[5]);
-                //nfa.PrintAutomate();
-                //ConvertNFAToDFA converter = new ConvertNFAToDFA();
-                //NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
-                //nfa1.PrintAutomate();
-                TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
-                transformNFAToRegex.TransformNFAinToRegex(nfa);
+                try
+                {
+                    NFA nfa = new NFA();
+                    nfa.LoadFile(args[2]);
+                    //nfa.PrintAutomate();
+                    //ConvertNFAToDFA converter = new ConvertNFAToDFA();
+                    //NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
+                    //nfa1.PrintAutomate();
+                    TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
+                    transformNFAToRegex.TransformNFAinToRegex(nfa);
 
-                //}
-                //catch (Exception ex)
-                //{
-                //    DisplayError(ex);
-                //}
+                }
+                catch (Exception ex)
+                {
+                    DisplayError(ex);
+                }
                 Pause();
             }
         }
