@@ -6,7 +6,7 @@ namespace NFA_To_Regex.NFAData
 {
     internal class NFA : NFABase
     {
-        private string filePath = @"Resources\NFA.xml";
+        private string filePath = @"..\..\..\Resources\NFA.xml";
         public NFA()
         {
             States = new List<string>();
@@ -25,7 +25,6 @@ namespace NFA_To_Regex.NFAData
 
         public void LoadNFAFromFile()
         {
-            string filePath = @"Resources\NFA.txt";
 
             string[] lines = File.ReadAllLines(filePath);
 
@@ -52,7 +51,7 @@ namespace NFA_To_Regex.NFAData
                 Transition transition = new Transition();
                 string[] line = lines[i].Split(' ');
                 transition.FromState = line[0];
-                transition.Symbol = line[1][0];
+                transition.Symbol = line[1];
                 transition.ToState = line[2];
                 transitions.Add(transition);
             }
@@ -92,9 +91,9 @@ namespace NFA_To_Regex.NFAData
                 this.States = nfaBase.States;
                 foreach (Transition transition in nfaBase.Transitions)
                 {
-                    if (transition.Symbol == '#')
+                    if (transition.Symbol == "#")
                     {
-                        transition.Symbol = nfaBase.Lambda;
+                        transition.Symbol = nfaBase.Lambda.ToString();
                     }
                 }
                 this.Transitions = nfaBase.Transitions;
