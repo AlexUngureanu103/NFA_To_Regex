@@ -15,7 +15,7 @@ namespace NFA_To_Regex
             nfa = myNfa;
             ReduceOrTransitions();
             nfa.PrintAutomate();
-            removeState("q1");
+            RemoveState("q1");
             nfa.PrintAutomate();
 
             string regexFormula = '(' + nfa.Transitions[0].Symbol + ")*";
@@ -41,7 +41,7 @@ namespace NFA_To_Regex
             }
         }
 
-        public void removeState(string state)
+        public void RemoveState(string state)
         {
             List<Transition> indexTransToState = new List<Transition>();
             List<Transition> indexTransStateTo = new List<Transition>();
