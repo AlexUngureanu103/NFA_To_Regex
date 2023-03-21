@@ -55,7 +55,7 @@ namespace NFA_To_Regex
 
         private string RemoveLambdaSymbols(string regex)
         {
-            return regex.Replace(NFAAutomate.Lambda+string.Empty, "");
+            return regex.Replace(NFAAutomate.Lambda + string.Empty, "");
         }
         private void ReduceTheAutomate()
         {
@@ -77,8 +77,9 @@ namespace NFA_To_Regex
                     if (CompareTransitions(NFAAutomate.Transitions[index1], NFAAutomate.Transitions[index2]))
                     {
                         int counter = 0;
+                        #region Create new symbol
                         string newSymbol = string.Empty;
-                        if (NFAAutomate.Transitions[index1].Symbol[0] != NFAAutomate.Lambda || NFAAutomate.Transitions[index1].Symbol.Length > 1)
+                        if (NFAAutomate.Transitions[index1].Symbol != NFAAutomate.Lambda + string.Empty)
                         {
                             newSymbol += NFAAutomate.Transitions[index1].Symbol;
                             counter++;
@@ -87,12 +88,13 @@ namespace NFA_To_Regex
                         {
                             newSymbol = NFAAutomate.Transitions[index2].Symbol;
                         }
-                        else if (NFAAutomate.Transitions[index2].Symbol[0] != NFAAutomate.Lambda || NFAAutomate.Transitions[index2].Symbol.Length > 1)
+                        else if (NFAAutomate.Transitions[index2].Symbol != NFAAutomate.Lambda + string.Empty)
                         {
                             newSymbol += '+' + NFAAutomate.Transitions[index2].Symbol;
                         }
                         if (string.IsNullOrEmpty(newSymbol))
                             newSymbol = NFAAutomate.Lambda + string.Empty;
+                        #endregion
 
                         Transition transition = new Transition(NFAAutomate.Transitions[index1].FromState, newSymbol, NFAAutomate.Transitions[index1].ToState);
                         NFAAutomate.Transitions.Remove(NFAAutomate.Transitions[index2]);
@@ -151,6 +153,7 @@ namespace NFA_To_Regex
 
         private void RemoveState(string state)
         {
+            #region initializations for the changing transitions
             bool hasLoops = false;
             Transition loopTransition = null;
             Stack<Transition> fromTransitionsToChange = new();
@@ -171,6 +174,8 @@ namespace NFA_To_Regex
                     hasLoops = true;
                 }
             });
+            #endregion
+
             // combine the possible outputs ??
             if (loopTransition != null)
             {
@@ -199,7 +204,7 @@ namespace NFA_To_Regex
                             }
                             else
                             {
-                                transition.Symbol += fromTransition.Symbol;
+                                transition.Symbol += toTransition.Symbol;
                             }
                         }
                         else
