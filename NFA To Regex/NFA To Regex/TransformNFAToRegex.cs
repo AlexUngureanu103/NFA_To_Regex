@@ -17,22 +17,55 @@ namespace NFA_To_Regex
                 throw new EmptyAutomateException();
             }
             string regex = string.Empty;
-            //NFAAutomate.Transitions[17].ToState = NFAAutomate.Transitions[17].FromState;
-            //NFAAutomate.Transitions[17].Symbol = "c";
-            HandleTransitionsWithMultipleSymbols();
-            HandleTransitionLoopsItSelf();
-            HandleTransitionLoopsItSelf();
-            HandleQ0ToQ1ToQ0();
+
+            //HandleTransitionsWithMultipleSymbols();
+            //HandleTransitionLoopsItSelf();
+            //HandleTransitionLoopsItSelf();
+            //HandleQ0ToQ1ToQ0();
+
+            //NFAAutomate.PrintAutomate();
+            //RemoveState("A");
+            //NFAAutomate.PrintAutomate();
+            //RemoveState("B");
+            //HandleTransitionsWithMultipleSymbols();
+            //NFAAutomate.PrintAutomate();
+            //RemoveState("C");
+            //HandleTransitionsWithMultipleSymbols();
+            //NFAAutomate.PrintAutomate();
             NFAAutomate.PrintAutomate();
-            RemoveState("A");
-            NFAAutomate.PrintAutomate();
-            RemoveState("B");
-            HandleTransitionsWithMultipleSymbols();
-            NFAAutomate.PrintAutomate();
-            RemoveState("C");
-            HandleTransitionsWithMultipleSymbols();
+            ReduceTheAutomate();
+            NFAAutomate.Transitions[0].Symbol = RemoveLambdaSymbols(NFAAutomate.Transitions[0].Symbol);
             NFAAutomate.PrintAutomate();
             return regex;
+        }
+
+        private string GetNonInitFinalState()
+        {
+            foreach (var state in NFAAutomate.States)
+            {
+                if (state == NFAAutomate.StartState || NFAAutomate.FinalStates.Contains(state))
+                {
+                    continue;
+                }
+                Console.WriteLine($"State to remove: {state}");
+                return state;
+            }
+            return string.Empty;
+        }
+
+        private string RemoveLambdaSymbols(string regex)
+        {
+            return regex.Replace(NFAAutomate.Lambda+string.Empty, "");
+        }
+        private void ReduceTheAutomate()
+        {
+            while (NFAAutomate.Transitions.Count > 1)
+            {
+                HandleTransitionsWithMultipleSymbols();
+                HandleTransitionLoopsItSelf();
+                RemoveState(GetNonInitFinalState());
+                NFAAutomate.PrintAutomate();
+            }
         }
 
         private void HandleTransitionsWithMultipleSymbols()
@@ -43,10 +76,29 @@ namespace NFA_To_Regex
                 {
                     if (CompareTransitions(NFAAutomate.Transitions[index1], NFAAutomate.Transitions[index2]))
                     {
-                        Transition transition = new Transition(NFAAutomate.Transitions[index1].FromState, NFAAutomate.Transitions[index1].Symbol + "+" + NFAAutomate.Transitions[index2].Symbol, NFAAutomate.Transitions[index1].ToState);
+                        int counter = 0;
+                        string newSymbol = string.Empty;
+                        if (NFAAutomate.Transitions[index1].Symbol[0] != NFAAutomate.Lambda || NFAAutomate.Transitions[index1].Symbol.Length > 1)
+                        {
+                            newSymbol += NFAAutomate.Transitions[index1].Symbol;
+                            counter++;
+                        }
+                        if (counter == 0)
+                        {
+                            newSymbol = NFAAutomate.Transitions[index2].Symbol;
+                        }
+                        else if (NFAAutomate.Transitions[index2].Symbol[0] != NFAAutomate.Lambda || NFAAutomate.Transitions[index2].Symbol.Length > 1)
+                        {
+                            newSymbol += '+' + NFAAutomate.Transitions[index2].Symbol;
+                        }
+                        if (string.IsNullOrEmpty(newSymbol))
+                            newSymbol = NFAAutomate.Lambda + string.Empty;
+
+                        Transition transition = new Transition(NFAAutomate.Transitions[index1].FromState, newSymbol, NFAAutomate.Transitions[index1].ToState);
                         NFAAutomate.Transitions.Remove(NFAAutomate.Transitions[index2]);
                         NFAAutomate.Transitions.Remove(NFAAutomate.Transitions[index1]);
-                        index1--;
+                        if (index1 > 0)
+                            index1--;
                         index2--;
                         NFAAutomate.Transitions.Add(transition);
                     }
@@ -73,7 +125,12 @@ namespace NFA_To_Regex
             {
                 if (NFAAutomate.Transitions[index].FromState == NFAAutomate.Transitions[index].ToState && !NFAAutomate.Transitions[index].Symbol.Contains("*"))
                 {
-                    NFAAutomate.Transitions[index].Symbol = '(' + NFAAutomate.Transitions[index].Symbol + ")*";
+                    if (NFAAutomate.Transitions[index].Symbol.Length > 1)
+                        NFAAutomate.Transitions[index].Symbol = '(' + NFAAutomate.Transitions[index].Symbol + ")*";
+                    else
+                    {
+                        NFAAutomate.Transitions[index].Symbol += '*';
+                    }
                 }
             }
         }
@@ -134,9 +191,16 @@ namespace NFA_To_Regex
                     {
                         if (hasLoops)
                         {
-                            transition.Symbol += string.Empty + '(';
-                            transition.Symbol += toTransition.Symbol;
-                            transition.Symbol += string.Empty + ')';
+                            if (toTransition.Symbol.Length > 1)
+                            {
+                                transition.Symbol += string.Empty + '(';
+                                transition.Symbol += toTransition.Symbol;
+                                transition.Symbol += string.Empty + ')';
+                            }
+                            else
+                            {
+                                transition.Symbol += fromTransition.Symbol;
+                            }
                         }
                         else
                         {
@@ -151,19 +215,31 @@ namespace NFA_To_Regex
                     {
                         if (hasLoops)
                         {
-                            transition.Symbol += string.Empty + '(';
-                            transition.Symbol += fromTransition.Symbol;
-                            transition.Symbol += string.Empty + ')';
+                            if (fromTransition.Symbol.Length > 1)
+                            {
+                                transition.Symbol += string.Empty + '(';
+                                transition.Symbol += fromTransition.Symbol;
+                                transition.Symbol += string.Empty + ')';
+                            }
+                            else
+                            {
+                                transition.Symbol += fromTransition.Symbol;
+                            }
                         }
                         else
                         {
                             transition.Symbol += fromTransition.Symbol;
                         }
                     }
+                    if (string.IsNullOrEmpty(transition.Symbol))
+                    {
+                        transition.Symbol = NFAAutomate.Lambda + string.Empty;
+                    }
                     NFAAutomate.Transitions.Add(transition);
                 }
             }
-            //remove leftovers
+
+            #region remove leftovers
             NFAAutomate.States.Remove(state);
             while (fromTransitionsToChange.Count > 0)
             {
@@ -179,6 +255,7 @@ namespace NFA_To_Regex
             {
                 NFAAutomate.Transitions.Remove(loopTransition);
             }
+            #endregion
         }
     }
 }

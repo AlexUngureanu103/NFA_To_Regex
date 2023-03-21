@@ -16,7 +16,7 @@ namespace NFA_To_Regex
                 try
                 {
                     NFA nfa = new NFA();
-                    nfa.LoadFile(args[2]);
+                    nfa.LoadFile(args[1]);
                     //nfa.PrintAutomate();
                     //ConvertNFAToDFA converter = new ConvertNFAToDFA();
                     //NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
@@ -24,12 +24,12 @@ namespace NFA_To_Regex
                     TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
                     transformNFAToRegex.TransformNFAinToRegex(nfa);
 
-                }
+            }
                 catch (Exception ex)
                 {
-                    DisplayError(ex);
-                }
-                Pause();
+                DisplayError(ex);
+            }
+            Pause();
             }
         }
 
