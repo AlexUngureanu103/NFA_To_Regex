@@ -2,7 +2,7 @@
   "profiles": {
     "NFA To Regex": {
       "commandName": "Project",
-      "commandLineArgs": "\"Resources\\Exemple2.xml\"\r\n\"Resources\\Exemple3.xml\"\r\n\"Resources\\Exemple4.xml\"\r\n\"Resources\\Exemple5.xml\"\r\n\"Resources\\Exemple6.xml\"\r\n\"Resources\\NFA.xml\""
+      "commandLineArgs": "\"Resources\\Exemple2.xml\"\r\n\"Resources\\Exemple3.xml\"\r\n\"Resources\\Exemple4.xml\"\r\n\"Resources\\Exemple5.xml\"\r\n\"Resources\\Exemple6.xml\"\r\n\"Resources\\NFA.xml\"\r\n\"Resources\\Exemple7 - curs.xml\"\r\n\"Resources\\Exemple8 - curs.xml\""
     }
   }
 }
