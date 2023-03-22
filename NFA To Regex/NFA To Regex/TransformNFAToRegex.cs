@@ -1,6 +1,7 @@
 ﻿using NFA_To_Regex.Exceptions;
 using NFA_To_Regex.NFAData;
 using System;
+using System.Reflection;
 
 namespace NFA_To_Regex
 {
@@ -61,29 +62,7 @@ namespace NFA_To_Regex
                 {
                     if (CompareTransitions(NFAAutomate.Transitions[index1], NFAAutomate.Transitions[index2]))
                     {
-                        int counter = 0;
-                        #region Create new symbol
-                        string newSymbol = string.Empty;
-                        if (NFAAutomate.Transitions[index1].Symbol != NFAAutomate.Lambda + string.Empty)
-                        {
-                            newSymbol += NFAAutomate.Transitions[index1].Symbol;
-                            counter++;
-                        }
-                        if (counter == 0)
-                        {
-                            newSymbol = NFAAutomate.Transitions[index2].Symbol;
-                        }
-                        else if (NFAAutomate.Transitions[index2].Symbol != NFAAutomate.Lambda + string.Empty)
-                        {
-                            newSymbol += '+' + NFAAutomate.Transitions[index2].Symbol;
-                        }
-                        if (string.IsNullOrEmpty(newSymbol))
-                            newSymbol = NFAAutomate.Lambda + string.Empty;
-                        if (newSymbol.Length > 1)
-                        {
-                            newSymbol = '(' + newSymbol + ')';
-                        }
-                        #endregion
+                        string newSymbol = CombineTransitionsSymbols(NFAAutomate.Transitions[index1], NFAAutomate.Transitions[index2]);
 
                         Transition transition = new Transition(NFAAutomate.Transitions[index1].FromState, newSymbol, NFAAutomate.Transitions[index1].ToState);
                         NFAAutomate.Transitions.Remove(NFAAutomate.Transitions[index2]);
@@ -95,6 +74,33 @@ namespace NFA_To_Regex
                     }
                 }
             }
+        }
+
+        private string CombineTransitionsSymbols(Transition transition1, Transition transition2)
+        {
+            string newSymbol = string.Empty;
+            int counter = 0;
+            if (transition1.Symbol != NFAAutomate.Lambda + string.Empty)
+            {
+                newSymbol += transition1.Symbol;
+                counter++;
+            }
+            if (counter == 0)
+            {
+                newSymbol = transition2.Symbol;
+            }
+            else if (transition2.Symbol != NFAAutomate.Lambda + string.Empty)
+            {
+                newSymbol += '+' + transition2.Symbol;
+            }
+            if (string.IsNullOrEmpty(newSymbol))
+                newSymbol = NFAAutomate.Lambda + string.Empty;
+            if (newSymbol.Length > 1)
+            {
+                newSymbol = '(' + newSymbol + ')';
+            }
+
+            return newSymbol;
         }
 
         private bool CompareTransitions(Transition t1, Transition t2)
@@ -114,14 +120,19 @@ namespace NFA_To_Regex
         {
             for (int index = 0; index < NFAAutomate.Transitions.Count; index++)
             {
-                if (NFAAutomate.Transitions[index].FromState == NFAAutomate.Transitions[index].ToState && NFAAutomate.Transitions[index].Symbol.Last() != '*')
+                AddKleeneOperatorForLoopsIfNeeded(NFAAutomate.Transitions[index]);
+            }
+        }
+
+        private void AddKleeneOperatorForLoopsIfNeeded(Transition transition)
+        {
+            if (transition.FromState == transition.ToState && transition.Symbol.Last() != '*')
+            {
+                if (transition.Symbol.Length > 1)
+                    transition.Symbol = '(' + transition.Symbol + ")*";
+                else
                 {
-                    if (NFAAutomate.Transitions[index].Symbol.Length > 1)
-                        NFAAutomate.Transitions[index].Symbol = '(' + NFAAutomate.Transitions[index].Symbol + ")*";
-                    else
-                    {
-                        NFAAutomate.Transitions[index].Symbol += '*';
-                    }
+                    transition.Symbol += '*';
                 }
             }
         }
@@ -157,10 +168,9 @@ namespace NFA_To_Regex
                 }
             }
             /*
-             (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
+            (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
              */
             RemoveLeftoverTransitions(fromTransitionsToChange, toTransitionToChange, loopTransition, state);
-
         }
 
         private void RemoveLeftoverTransitions(Stack<Transition> fromTransitionsToChange, Stack<Transition> toTransitionToChange, Transition loopTransition, string state)
@@ -191,9 +201,7 @@ namespace NFA_To_Regex
             }
             if (transition.Symbol.Length > 1 && hasLoops)
             {
-                newSymbol += string.Empty + '(';
-                newSymbol += transition.Symbol;
-                newSymbol += string.Empty + ')';
+                newSymbol += string.Empty + '(' + transition.Symbol + string.Empty + ')';
             }
             else
             {
