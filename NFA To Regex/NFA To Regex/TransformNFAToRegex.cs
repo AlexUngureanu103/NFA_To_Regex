@@ -140,32 +140,6 @@ namespace NFA_To_Regex
             }
         }
 
-        private string UpdateTransitionSymbolWhenRemovingAState(Transition transition, bool hasLoops)
-        {
-            string newSymbol = string.Empty;
-            if (transition.Symbol != string.Empty + this.NFAAutomate.Lambda)
-            {
-                if (hasLoops)
-                {
-                    if (transition.Symbol.Length > 1)
-                    {
-                        newSymbol += string.Empty + '(';
-                        newSymbol += transition.Symbol;
-                        newSymbol += string.Empty + ')';
-                    }
-                    else
-                    {
-                        newSymbol += transition.Symbol;
-                    }
-                }
-                else
-                {
-                    newSymbol = transition.Symbol;
-                }
-            }
-            return newSymbol;
-        }
-
         private void RemoveState(string state)
         {
             #region initializations for the changing transitions
@@ -195,28 +169,15 @@ namespace NFA_To_Regex
             foreach (var toTransition in toTransitionToChange)
             {
                 foreach (var fromTransition in fromTransitionsToChange)
-                {
-                    Transition transition = new();
-                    transition.FromState = toTransition.FromState;
-                    transition.ToState = fromTransition.ToState;
-
-                    transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(toTransition, hasLoops);
-                    if (loopTransition != null)
-                    {
-                        transition.Symbol += loopTransition.Symbol;
-                    }
-                    transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(fromTransition, hasLoops);
-                    if (string.IsNullOrEmpty(transition.Symbol))
-                    {
-                        transition.Symbol = NFAAutomate.Lambda + string.Empty;
-                    }
-                    NFAAutomate.Transitions.Add(transition);
+                {         
+                    NFAAutomate.Transitions.Add(FormNewTransition(fromTransition,toTransition,hasLoops,loopTransition));
                 }
             }
             #endregion
             /*
              (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
              */
+
             #region remove leftovers
             NFAAutomate.States.Remove(state);
             while (fromTransitionsToChange.Count > 0)
@@ -234,6 +195,51 @@ namespace NFA_To_Regex
                 NFAAutomate.Transitions.Remove(loopTransition);
             }
             #endregion
+        }
+
+        private string UpdateTransitionSymbolWhenRemovingAState(Transition transition, bool hasLoops)
+        {
+            string newSymbol = string.Empty;
+            if (transition.Symbol != string.Empty + this.NFAAutomate.Lambda)
+            {
+                if (hasLoops)
+                {
+                    if (transition.Symbol.Length > 1)
+                    {
+                        newSymbol += string.Empty + '(';
+                        newSymbol += transition.Symbol;
+                        newSymbol += string.Empty + ')';
+                    }
+                    else
+                    {
+                        newSymbol += transition.Symbol;
+                    }
+                }
+                else
+                {
+                    newSymbol = transition.Symbol;
+                }
+            }
+            return newSymbol;
+        }
+
+        private Transition FormNewTransition(Transition fromTransition , Transition toTransition , bool hasLoops, Transition loopTransition)
+        {
+            Transition transition = new();
+            transition.FromState = toTransition.FromState;
+            transition.ToState = fromTransition.ToState;
+
+            transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(toTransition, hasLoops);
+            if (loopTransition != null)
+            {
+                transition.Symbol += loopTransition.Symbol;
+            }
+            transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(fromTransition, hasLoops);
+            if (string.IsNullOrEmpty(transition.Symbol))
+            {
+                transition.Symbol = NFAAutomate.Lambda + string.Empty;
+            }
+            return transition;
         }
     }
 }
