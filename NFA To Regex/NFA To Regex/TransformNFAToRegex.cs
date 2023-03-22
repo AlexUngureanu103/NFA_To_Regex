@@ -1,7 +1,5 @@
 ﻿using NFA_To_Regex.Exceptions;
 using NFA_To_Regex.NFAData;
-using System;
-using System.Reflection;
 
 namespace NFA_To_Regex
 {
@@ -38,10 +36,6 @@ namespace NFA_To_Regex
             return string.Empty;
         }
 
-        private string RemoveLambdaSymbols(string regex)
-        {
-            return regex.Replace(NFAAutomate.Lambda + string.Empty, "");
-        }
         private void ReduceTheAutomate()
         {
             while (NFAAutomate.Transitions.Count > 1)
