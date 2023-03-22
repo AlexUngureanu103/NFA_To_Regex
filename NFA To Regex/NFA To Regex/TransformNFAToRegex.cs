@@ -22,7 +22,7 @@ namespace NFA_To_Regex
             return NFAAutomate.Transitions[0].Symbol;
         }
 
-        private string GetNonInitFinalState()
+        private string GetFirstNonInitialAndNonFinalState()
         {
             foreach (var state in NFAAutomate.States)
             {
@@ -43,7 +43,7 @@ namespace NFA_To_Regex
                 HandleTransitionLoopsItSelf();
                 HandleTransitionsWithMultipleSymbols();
                 HandleTransitionLoopsItSelf();
-                RemoveState(GetNonInitFinalState());
+                RemoveState(GetFirstNonInitialAndNonFinalState());
                 NFAAutomate.PrintAutomate();
             }
         }
