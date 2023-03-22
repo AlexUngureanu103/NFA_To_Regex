@@ -159,8 +159,12 @@ namespace NFA_To_Regex
             /*
              (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
              */
+            RemoveLeftoverTransitions(fromTransitionsToChange, toTransitionToChange, loopTransition, state);
 
-            #region remove leftovers
+        }
+
+        private void RemoveLeftoverTransitions(Stack<Transition> fromTransitionsToChange, Stack<Transition> toTransitionToChange, Transition loopTransition, string state)
+        {
             NFAAutomate.States.Remove(state);
             while (fromTransitionsToChange.Count > 0)
             {
@@ -176,7 +180,6 @@ namespace NFA_To_Regex
             {
                 NFAAutomate.Transitions.Remove(loopTransition);
             }
-            #endregion
         }
 
         private string UpdateTransitionSymbolWhenRemovingAState(Transition transition, bool hasLoops)
@@ -212,6 +215,7 @@ namespace NFA_To_Regex
                 transition.Symbol += loopTransition.Symbol;
             }
             transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(fromTransition, hasLoops);
+
             if (string.IsNullOrEmpty(transition.Symbol))
             {
                 transition.Symbol = NFAAutomate.Lambda + string.Empty;
