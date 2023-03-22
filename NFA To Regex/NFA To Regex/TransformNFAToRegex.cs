@@ -16,27 +16,11 @@ namespace NFA_To_Regex
             {
                 throw new EmptyAutomateException();
             }
-            string regex = string.Empty;
-
-            //HandleTransitionsWithMultipleSymbols();
-            //HandleTransitionLoopsItSelf();
-            //HandleTransitionLoopsItSelf();
-            //HandleQ0ToQ1ToQ0();
-
-            //NFAAutomate.PrintAutomate();
-            //RemoveState("A");
-            //NFAAutomate.PrintAutomate();
-            //RemoveState("B");
-            //HandleTransitionsWithMultipleSymbols();
-            //NFAAutomate.PrintAutomate();
-            //RemoveState("C");
-            //HandleTransitionsWithMultipleSymbols();
-            //NFAAutomate.PrintAutomate();
             NFAAutomate.PrintAutomate();
             ReduceTheAutomate();
-            NFAAutomate.Transitions[0].Symbol = RemoveLambdaSymbols(NFAAutomate.Transitions[0].Symbol);
+
             NFAAutomate.PrintAutomate();
-            return regex;
+            return NFAAutomate.Transitions[0].Symbol;
         }
 
         private string GetNonInitFinalState()
@@ -61,6 +45,7 @@ namespace NFA_To_Regex
         {
             while (NFAAutomate.Transitions.Count > 1)
             {
+                HandleTransitionLoopsItSelf();
                 HandleTransitionsWithMultipleSymbols();
                 HandleTransitionLoopsItSelf();
                 RemoveState(GetNonInitFinalState());
@@ -94,6 +79,10 @@ namespace NFA_To_Regex
                         }
                         if (string.IsNullOrEmpty(newSymbol))
                             newSymbol = NFAAutomate.Lambda + string.Empty;
+                        if (newSymbol.Length > 1)
+                        {
+                            newSymbol = '(' + newSymbol + ')';
+                        }
                         #endregion
 
                         Transition transition = new Transition(NFAAutomate.Transitions[index1].FromState, newSymbol, NFAAutomate.Transitions[index1].ToState);
@@ -125,7 +114,7 @@ namespace NFA_To_Regex
         {
             for (int index = 0; index < NFAAutomate.Transitions.Count; index++)
             {
-                if (NFAAutomate.Transitions[index].FromState == NFAAutomate.Transitions[index].ToState && !NFAAutomate.Transitions[index].Symbol.Contains("*"))
+                if (NFAAutomate.Transitions[index].FromState == NFAAutomate.Transitions[index].ToState && NFAAutomate.Transitions[index].Symbol.Last() != '*')
                 {
                     if (NFAAutomate.Transitions[index].Symbol.Length > 1)
                         NFAAutomate.Transitions[index].Symbol = '(' + NFAAutomate.Transitions[index].Symbol + ")*";
@@ -175,14 +164,6 @@ namespace NFA_To_Regex
                 }
             });
             #endregion
-
-            // combine the possible outputs ??
-            if (loopTransition != null)
-            {
-                // move the loops to every other states
-                //IF the there are circular transitions 
-                //eg: qi , d ->q && q, a ->qi
-            }
 
             foreach (var toTransition in toTransitionToChange)
             {

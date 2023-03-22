@@ -16,20 +16,17 @@ namespace NFA_To_Regex
                 try
                 {
                     NFA nfa = new NFA();
-                    nfa.LoadFile(args[4]);
-                    //nfa.PrintAutomate();
-                    //ConvertNFAToDFA converter = new ConvertNFAToDFA();
-                    //NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
-                    //nfa1.PrintAutomate();
-                    TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
-                    transformNFAToRegex.TransformNFAinToRegex(nfa);
+                    nfa.LoadFile(args[3]);
 
-            }
+                    TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
+                    Console.WriteLine($"The regular expression for the given NFA is :{transformNFAToRegex.TransformNFAinToRegex(nfa)}");
+
+                }
                 catch (Exception ex)
                 {
-                DisplayError(ex);
-            }
-            Pause();
+                    DisplayError(ex);
+                }
+                Pause();
             }
         }
 
