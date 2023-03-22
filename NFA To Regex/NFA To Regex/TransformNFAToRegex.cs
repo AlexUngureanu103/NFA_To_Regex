@@ -140,6 +140,32 @@ namespace NFA_To_Regex
             }
         }
 
+        private string UpdateTransitionSymbolWhenRemovingAState(Transition transition, bool hasLoops)
+        {
+            string newSymbol = string.Empty;
+            if (transition.Symbol != string.Empty + this.NFAAutomate.Lambda)
+            {
+                if (hasLoops)
+                {
+                    if (transition.Symbol.Length > 1)
+                    {
+                        newSymbol += string.Empty + '(';
+                        newSymbol += transition.Symbol;
+                        newSymbol += string.Empty + ')';
+                    }
+                    else
+                    {
+                        newSymbol += transition.Symbol;
+                    }
+                }
+                else
+                {
+                    newSymbol = transition.Symbol;
+                }
+            }
+            return newSymbol;
+        }
+
         private void RemoveState(string state)
         {
             #region initializations for the changing transitions
@@ -164,7 +190,8 @@ namespace NFA_To_Regex
                 }
             });
             #endregion
-
+            
+            #region
             foreach (var toTransition in toTransitionToChange)
             {
                 foreach (var fromTransition in fromTransitionsToChange)
@@ -173,50 +200,12 @@ namespace NFA_To_Regex
                     transition.FromState = toTransition.FromState;
                     transition.ToState = fromTransition.ToState;
 
-                    if (toTransition.Symbol != string.Empty + this.NFAAutomate.Lambda)
-                    {
-                        if (hasLoops)
-                        {
-                            if (toTransition.Symbol.Length > 1)
-                            {
-                                transition.Symbol += string.Empty + '(';
-                                transition.Symbol += toTransition.Symbol;
-                                transition.Symbol += string.Empty + ')';
-                            }
-                            else
-                            {
-                                transition.Symbol += toTransition.Symbol;
-                            }
-                        }
-                        else
-                        {
-                            transition.Symbol = toTransition.Symbol;
-                        }
-                    }
+                    transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(toTransition, hasLoops);
                     if (loopTransition != null)
                     {
                         transition.Symbol += loopTransition.Symbol;
                     }
-                    if (fromTransition.Symbol != string.Empty + this.NFAAutomate.Lambda)
-                    {
-                        if (hasLoops)
-                        {
-                            if (fromTransition.Symbol.Length > 1)
-                            {
-                                transition.Symbol += string.Empty + '(';
-                                transition.Symbol += fromTransition.Symbol;
-                                transition.Symbol += string.Empty + ')';
-                            }
-                            else
-                            {
-                                transition.Symbol += fromTransition.Symbol;
-                            }
-                        }
-                        else
-                        {
-                            transition.Symbol += fromTransition.Symbol;
-                        }
-                    }
+                    transition.Symbol += UpdateTransitionSymbolWhenRemovingAState(fromTransition, hasLoops);
                     if (string.IsNullOrEmpty(transition.Symbol))
                     {
                         transition.Symbol = NFAAutomate.Lambda + string.Empty;
@@ -224,7 +213,10 @@ namespace NFA_To_Regex
                     NFAAutomate.Transitions.Add(transition);
                 }
             }
-
+            #endregion
+            /*
+             (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
+             */
             #region remove leftovers
             NFAAutomate.States.Remove(state);
             while (fromTransitionsToChange.Count > 0)
