@@ -126,23 +126,8 @@ namespace NFA_To_Regex
             }
         }
 
-        private void HandleQ0ToQ1ToQ0()
-        {
-            for (int index = 0; index < NFAAutomate.Transitions.Count; index++)
-            {
-                for (int index2 = 0; index2 < NFAAutomate.Transitions.Count; index2++)
-                {
-                    if (NFAAutomate.Transitions[index] != NFAAutomate.Transitions[index2] && NFAAutomate.Transitions[index].ToState == NFAAutomate.Transitions[index].FromState)
-                    {
-                        //
-                    }
-                }
-            }
-        }
-
         private void RemoveState(string state)
         {
-            #region initializations for the changing transitions
             bool hasLoops = false;
             Transition loopTransition = null;
             Stack<Transition> fromTransitionsToChange = new();
@@ -163,17 +148,14 @@ namespace NFA_To_Regex
                     hasLoops = true;
                 }
             });
-            #endregion
-            
-            #region
+
             foreach (var toTransition in toTransitionToChange)
             {
                 foreach (var fromTransition in fromTransitionsToChange)
-                {         
-                    NFAAutomate.Transitions.Add(FormNewTransition(fromTransition,toTransition,hasLoops,loopTransition));
+                {
+                    NFAAutomate.Transitions.Add(FormNewTransition(fromTransition, toTransition, hasLoops, loopTransition));
                 }
             }
-            #endregion
             /*
              (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
              */
@@ -200,30 +182,25 @@ namespace NFA_To_Regex
         private string UpdateTransitionSymbolWhenRemovingAState(Transition transition, bool hasLoops)
         {
             string newSymbol = string.Empty;
-            if (transition.Symbol != string.Empty + this.NFAAutomate.Lambda)
+            if (!(transition.Symbol != string.Empty + this.NFAAutomate.Lambda))
             {
-                if (hasLoops)
-                {
-                    if (transition.Symbol.Length > 1)
-                    {
-                        newSymbol += string.Empty + '(';
-                        newSymbol += transition.Symbol;
-                        newSymbol += string.Empty + ')';
-                    }
-                    else
-                    {
-                        newSymbol += transition.Symbol;
-                    }
-                }
-                else
-                {
-                    newSymbol = transition.Symbol;
-                }
+                return newSymbol;
             }
+            if (transition.Symbol.Length > 1 && hasLoops)
+            {
+                newSymbol += string.Empty + '(';
+                newSymbol += transition.Symbol;
+                newSymbol += string.Empty + ')';
+            }
+            else
+            {
+                newSymbol += transition.Symbol;
+            }
+
             return newSymbol;
         }
 
-        private Transition FormNewTransition(Transition fromTransition , Transition toTransition , bool hasLoops, Transition loopTransition)
+        private Transition FormNewTransition(Transition fromTransition, Transition toTransition, bool hasLoops, Transition loopTransition)
         {
             Transition transition = new();
             transition.FromState = toTransition.FromState;
