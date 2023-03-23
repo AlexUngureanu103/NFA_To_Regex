@@ -10,74 +10,10 @@ namespace NFA_To_Regex.NFAData
         public NFA()
         {
             States = new List<string>();
-            Alphabet = new List<char>();
+            Alphabet = new List<string>();
             Transitions = new List<Transition>();
             FinalStates = new List<string>();
         }
-
-        public void TransformNFAToDFA()
-        {
-            if (States == null)
-            {
-                throw new EmptyAutomateExceptions();
-            }
-        }
-
-        public void LoadNFAFromFile()
-        {
-
-            string[] lines = File.ReadAllLines(filePath);
-
-            List<string> states = new List<string>();
-            foreach (string state in lines[0].Split(' '))
-            {
-                states.Add(state);
-            }
-            List<char> alphabet = new List<char>();
-            foreach (string symbol in lines[1].Split(' '))
-            {
-                alphabet.Add(symbol[0]);
-            }
-            string initialState = lines[2].Split(' ')[0];
-
-            List<string> finalStates = new List<string>();
-            foreach (string finState in lines[3].Split(' '))
-            {
-                finalStates.Add(finState);
-            }
-            List<Transition> transitions = new List<Transition>();
-            for (int i = 4; i < lines.Length; i++)
-            {
-                Transition transition = new Transition();
-                string[] line = lines[i].Split(' ');
-                transition.FromState = line[0];
-                transition.Symbol = line[1];
-                transition.ToState = line[2];
-                transitions.Add(transition);
-            }
-            this.Alphabet = alphabet;
-            this.StartState = initialState;
-            this.States = states;
-            this.Transitions = transitions;
-            this.FinalStates = finalStates;
-
-            //SaveFile();
-        }
-
-        //public void SaveFile()
-        //{
-        //    NFABase nFABase = new NFABase();
-        //    nFABase.Alphabet = this.Alphabet;
-        //    nFABase.StartState = this.StartState;
-        //    nFABase.States = this.States;
-        //    nFABase.Transitions = this.Transitions;
-        //    nFABase.FinalStates = this.FinalStates;
-        //    XmlSerializer xmlSerializer = new XmlSerializer(typeof(NFABase));
-        //    using (StreamWriter writer = new StreamWriter(filePath))
-        //    {
-        //        xmlSerializer.Serialize(writer, nFABase);
-        //    }
-        //}
 
         public void LoadFile()
         {

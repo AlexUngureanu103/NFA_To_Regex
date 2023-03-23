@@ -1,9 +1,4 @@
 ﻿using NFA_To_Regex.NFAData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NFA_To_Regex
 {
@@ -15,12 +10,38 @@ namespace NFA_To_Regex
             nfa = myNfa;
             ReduceOrTransitions();
             nfa.PrintAutomate();
-            RemoveState("q1");
+            AddFinalState();
+            ReduceStates();
             nfa.PrintAutomate();
 
-            string regexFormula = '(' + nfa.Transitions[0].Symbol + ")*";
-            regexFormula += nfa.Transitions[1].Symbol;
-            regexFormula += '(' + nfa.Transitions[2].Symbol + ")*";
+            //create regex formula from the states left
+            string regexFormula = string.Empty;
+            int index = 0;            
+            foreach(Transition trans in nfa.Transitions) 
+            {
+                if(trans.FromState == nfa.StartState && trans.ToState == nfa.StartState)
+                {
+                    if (trans.Symbol[0] == '(' && trans.Symbol[trans.Symbol.Length - 1] == ')')
+                    {
+                        regexFormula += trans.Symbol + '*';
+                    }
+                    else
+                    {
+                        regexFormula += '(' + trans.Symbol + ")*";
+                    }
+                    break;
+                }
+                index++;
+            }
+            if (nfa.Transitions.Count == 1 && regexFormula == string.Empty)
+            {
+                regexFormula += nfa.Transitions[0].Symbol;
+            }
+            else
+            {
+                nfa.Transitions.RemoveAt(index);
+                regexFormula += nfa.Transitions[0].Symbol;
+            }
 
             return regexFormula;
         }
@@ -33,11 +54,40 @@ namespace NFA_To_Regex
                 {
                     if (nfa.Transitions[i].FromState == nfa.Transitions[j].FromState && nfa.Transitions[i].ToState == nfa.Transitions[j].ToState)
                     {
-                        nfa.Transitions[i].Symbol = '(' + nfa.Transitions[i].Symbol + '+' + nfa.Transitions[j].Symbol + ')';
+                        if (nfa.Transitions[i].Symbol != nfa.Transitions[j].Symbol)
+                        {
+                            nfa.Transitions[i].Symbol = '(' + nfa.Transitions[i].Symbol + '+' + nfa.Transitions[j].Symbol + ')';
+                        }
                         nfa.Transitions.RemoveAt(j);
                         j--;
                     }
                 }
+            }
+        }
+
+        private void AddFinalState()
+        {
+            string finState = "Fin";
+            nfa.FinalStates.ForEach(fState => 
+            {
+                nfa.Transitions.Add(new Transition(fState, nfa.Lambda.ToString(), finState));
+            });
+            nfa.FinalStates.Clear();
+            nfa.FinalStates.Add(finState);
+            nfa.States.Add(finState);
+        }
+
+        private void ReduceStates()
+        {
+            List<string> states = new List<string>(nfa.States);
+            states.Remove(nfa.StartState);
+            states.Remove(nfa.FinalStates[0]);
+            foreach (string state in states)
+            {
+                RemoveState(state);
+                Console.WriteLine("Reduce " + state);
+                nfa.PrintAutomate();
+                ReduceOrTransitions();
             }
         }
 
@@ -68,22 +118,41 @@ namespace NFA_To_Regex
             string starTrans = string.Empty;
             if (indexStarTrans != -1)
             {
-                starTrans = nfa.Transitions[indexStarTrans].Symbol + '*';
+                if (nfa.Transitions[indexStarTrans].Symbol.Length != 1 )
+                {
+                    starTrans = '(' + nfa.Transitions[indexStarTrans].Symbol + ")*";
+                }
+                else
+                {
+                    starTrans = nfa.Transitions[indexStarTrans].Symbol + '*';
+                }
                 nfa.Transitions.RemoveAt(indexStarTrans);
             }
 
             //create new transitions and delete the old ones
+            string fromSymbol, toSymbol;
             indexTransToState.ForEach(fromS =>
             {
+                fromSymbol = fromS.Symbol;
+                if (fromSymbol[0] == nfa.Lambda)
+                {
+                    fromSymbol = "";
+                }
                 indexTransStateTo.ForEach(toS =>
                 {
+                    toSymbol = toS.Symbol;
+                    if (toSymbol[0] == nfa.Lambda && toSymbol!= fromS.Symbol)
+                    {
+                        toSymbol = "";
+                    }
+
                     Transition transition = new Transition();
                     transition.FromState = fromS.FromState;
                     transition.ToState = toS.ToState;
-                    transition.Symbol = fromS.Symbol + starTrans + toS.Symbol;
+                    transition.Symbol = fromSymbol + starTrans + toSymbol;
                     nfa.Transitions.Add(transition);
 
-                    if (indexTransToState.Count == 1)
+                    if (indexTransToState[indexTransToState.Count - 1] == fromS)
                     {
                         nfa.Transitions.Remove(toS);
                     }
@@ -91,9 +160,9 @@ namespace NFA_To_Regex
                 nfa.Transitions.Remove(fromS);
             });
 
-            indexTransStateTo.ForEach(toS =>
-            {
-            });
+            indexTransToState.Clear();
+            indexTransStateTo.Clear();
+            nfa.States.Remove(state);
         }
     }
 }

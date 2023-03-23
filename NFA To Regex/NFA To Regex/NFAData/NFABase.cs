@@ -2,11 +2,11 @@
 {
     public class NFABase
     {
-        public char Lambda = 'λ';
+        public char Lambda = '#';
 
         public List<string> States { get; set; }
 
-        public List<char> Alphabet { get; set; }
+        public List<string> Alphabet { get; set; }
 
         public List<Transition> Transitions { get; set; }
 
