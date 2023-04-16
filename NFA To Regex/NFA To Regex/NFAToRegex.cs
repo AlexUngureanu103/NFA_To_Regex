@@ -15,32 +15,14 @@ namespace NFA_To_Regex
             nfa.PrintAutomate();
 
             //create regex formula from the states left
-            string regexFormula = string.Empty;
-            int index = 0;            
+            string regexFormula = string.Empty;         
             foreach(Transition trans in nfa.Transitions) 
             {
-                if(trans.FromState == nfa.StartState && trans.ToState == nfa.StartState)
+                if(trans.FromState == nfa.StartState && trans.ToState == nfa.FinalStates[0])
                 {
-                    if (trans.Symbol[0] == '(' && trans.Symbol[trans.Symbol.Length - 1] == ')')
-                    {
-                        regexFormula += trans.Symbol + '*';
-                    }
-                    else
-                    {
-                        regexFormula += '(' + trans.Symbol + ")*";
-                    }
+                    regexFormula = trans.Symbol;                    
                     break;
                 }
-                index++;
-            }
-            if (nfa.Transitions.Count == 1 && regexFormula == string.Empty)
-            {
-                regexFormula += nfa.Transitions[0].Symbol;
-            }
-            else
-            {
-                nfa.Transitions.RemoveAt(index);
-                regexFormula += nfa.Transitions[0].Symbol;
             }
 
             return regexFormula;
@@ -74,6 +56,12 @@ namespace NFA_To_Regex
             });
             nfa.FinalStates.Clear();
             nfa.FinalStates.Add(finState);
+
+            string initState = "Init";
+            nfa.Transitions.Add(new Transition(initState, nfa.Lambda.ToString(), nfa.StartState));
+            nfa.StartState = initState;
+
+            nfa.States.Add(initState);
             nfa.States.Add(finState);
         }
 

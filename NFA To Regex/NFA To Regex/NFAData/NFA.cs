@@ -6,7 +6,7 @@ namespace NFA_To_Regex.NFAData
 {
     internal class NFA : NFABase
     {
-        private string filePath = @"..\..\..\Resources\NFA.xml";
+        private string filePath = @"..\..\..\Resources\NFA2.xml";
         public NFA()
         {
             States = new List<string>();

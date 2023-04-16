@@ -9,21 +9,12 @@ namespace NFA_To_Regex
         {
             while (true)
             {
-                //try
-                //{
+
                 NFA nfa = new NFA();
                 nfa.LoadFile();
                 NFAToRegex convert = new NFAToRegex();               
                 Console.WriteLine(convert.GetRegex(nfa));
-                //nfa.PrintAutomate();
-                //ConvertNFAToDFA converter = new ConvertNFAToDFA();
-                //NFA nfa1 = converter.FromAFNLambdaToAFD(nfa);
-                //nfa1.PrintAutomate();
-                //}
-                //catch (Exception ex)
-                //{
-                //    DisplayError(ex);
-                //}
+                
                 Pause();
             }
         }
