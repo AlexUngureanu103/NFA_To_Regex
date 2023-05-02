@@ -19,7 +19,8 @@ namespace NFA_To_Regex
                     nfa.LoadFile(args[8]);
 
                     TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
-                    Console.WriteLine($"The regular expression for the given NFA is :{transformNFAToRegex.TransformNFAinToRegex(nfa)}");
+                    Console.WriteLine();
+                    Console.WriteLine($"The regular expression for the given NFA is :\n{transformNFAToRegex.TransformNFAinToRegex(nfa)}");
 
                 }
                 catch (Exception ex)
