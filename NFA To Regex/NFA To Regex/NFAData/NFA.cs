@@ -185,6 +185,7 @@ namespace NFA_To_Regex.NFAData
                 }
                 this.Transitions = nfaBase.Transitions;
                 this.FinalStates = nfaBase.FinalStates;
+                this.Lambda = nfaBase.Lambda;
             }
             if (!VerifyAutomaton())
             {

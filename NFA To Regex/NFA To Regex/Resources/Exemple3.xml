@@ -34,7 +34,7 @@
     <Transition>
       <FromState>q3</FromState>
       <ToState>q2</ToState>
-      <Symbol>#</Symbol>
+      <Symbol>955</Symbol>
     </Transition>
     <Transition>
       <FromState>q3</FromState>
