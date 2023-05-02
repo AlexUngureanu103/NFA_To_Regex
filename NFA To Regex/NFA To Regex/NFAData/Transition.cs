@@ -10,7 +10,6 @@
 
         public Transition()
         {
-
         }
 
         public Transition(string fromState, string symbol, string toState)

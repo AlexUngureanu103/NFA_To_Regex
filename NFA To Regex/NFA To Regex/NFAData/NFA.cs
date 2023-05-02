@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 namespace NFA_To_Regex.NFAData
 {
-    /*https://www.codingninjas.com/codestudio/library/nfa-to-regular-expression*/
     internal class NFA : NFABase
     {
         private string filePath = @"Resources\NFA.xml";
@@ -107,24 +106,7 @@ namespace NFA_To_Regex.NFAData
             this.States = states;
             this.Transitions = transitions;
             this.FinalStates = finalStates;
-
-            //SaveFile();
         }
-
-        //public void SaveFile()
-        //{
-        //    NFABase nFABase = new NFABase();
-        //    nFABase.Alphabet = this.Alphabet;
-        //    nFABase.StartState = this.StartState;
-        //    nFABase.States = this.States;
-        //    nFABase.Transitions = this.Transitions;
-        //    nFABase.FinalStates = this.FinalStates;
-        //    XmlSerializer xmlSerializer = new XmlSerializer(typeof(NFABase));
-        //    using (StreamWriter writer = new StreamWriter(filePath))
-        //    {
-        //        xmlSerializer.Serialize(writer, nFABase);
-        //    }
-        //}
 
         private void MakeFinalStateUnique()
         {
@@ -165,7 +147,6 @@ namespace NFA_To_Regex.NFAData
             StartState = initialState;
         }
 
-        
         public void LoadFile(string filepath)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(NFABase));
@@ -199,7 +180,6 @@ namespace NFA_To_Regex.NFAData
         {
             DisplayBase displayBase = new DisplayBase();
             Console.WriteLine();
-            //gamma = letter gamma
             char gamma = 'D';
             displayBase.DisplayLine("Finite Automate : ", ConsoleColor.Gray);
             displayBase.DisplayLine($"Format : M=({{States}}, {{Alphabet}}, {gamma}, StartState, {{FinalStates}})", ConsoleColor.Gray);

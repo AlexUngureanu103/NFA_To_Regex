@@ -16,12 +16,11 @@ namespace NFA_To_Regex
                 try
                 {
                     NFA nfa = new NFA();
-                    nfa.LoadFile(args[8]);
+                    nfa.LoadFile(args[10]);
 
                     TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
                     Console.WriteLine();
                     Console.WriteLine($"The regular expression for the given NFA is :\n{transformNFAToRegex.TransformNFAinToRegex(nfa)}");
-
                 }
                 catch (Exception ex)
                 {
@@ -46,6 +45,5 @@ namespace NFA_To_Regex
             Console.ReadKey(true);
             Console.WriteLine();
         }
-
     }
 }

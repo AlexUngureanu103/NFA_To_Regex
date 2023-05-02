@@ -161,9 +161,6 @@ namespace NFA_To_Regex
                     NFAAutomate.Transitions.Add(FormNewTransition(fromTransition, toTransition, hasLoops, loopTransition));
                 }
             }
-            /*
-            (((b((a*+(cb)*))*c)+(b((a*+(cb)*))*c)a*)+(b((a*+(cb)*))*b)(c((a*+(cb)*))*b)*(((c((a*+(cb)*))*c)+(c((a*+(cb)*))*c)a*)))
-             */
             RemoveLeftoverTransitions(fromTransitionsToChange, toTransitionToChange, loopTransition, state);
         }
 
