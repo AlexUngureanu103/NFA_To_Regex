@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <NFABase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Lambda>955</Lambda>
+  <Lambda>35</Lambda>
   <States>
     <string>q1</string>
     <string>q2</string>
@@ -34,7 +34,7 @@
     <Transition>
       <FromState>q3</FromState>
       <ToState>q2</ToState>
-      <Symbol>955</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q3</FromState>

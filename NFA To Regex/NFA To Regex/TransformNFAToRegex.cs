@@ -73,26 +73,10 @@ namespace NFA_To_Regex
         private string CombineTransitionsSymbols(Transition transition1, Transition transition2)
         {
             string newSymbol = string.Empty;
-            int counter = 0;
-            if (transition1.Symbol != NFAAutomate.Lambda + string.Empty)
-            {
-                newSymbol += transition1.Symbol;
-                counter++;
-            }
-            if (counter == 0)
-            {
-                newSymbol = transition2.Symbol;
-            }
-            else if (transition2.Symbol != NFAAutomate.Lambda + string.Empty)
-            {
-                newSymbol += '+' + transition2.Symbol;
-            }
 
             newSymbol = transition1.Symbol;
             newSymbol += '+' + transition2.Symbol;
 
-            if (string.IsNullOrEmpty(newSymbol))
-                newSymbol = NFAAutomate.Lambda + string.Empty;
             if (newSymbol.Length > 1)
             {
                 newSymbol = '(' + newSymbol + ')';

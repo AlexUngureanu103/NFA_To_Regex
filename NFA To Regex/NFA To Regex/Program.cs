@@ -15,8 +15,20 @@ namespace NFA_To_Regex
             {
                 try
                 {
+                    //0 "Resources\Exemple2.xml"
+                    //1 "Resources\Exemple3.xml"
+                    //2 "Resources\Exemple4.xml"
+                    //3 "Resources\Exemple5.xml"
+                    //4 "Resources\Exemple6.xml"
+                    //5 "Resources\NFA.xml"
+                    //6 "Resources\Exemple7 - curs.xml"
+                    //7 "Resources\Exemple8 - curs.xml"
+                    //8 "Resources\NFA_.xml"
+                    //9 "Resources\NFA1.xml"
+                    //10 "Resources\NFA2.xml"
+
                     NFA nfa = new NFA();
-                    nfa.LoadFile(args[8]);
+                    nfa.LoadFile(args[7]);
 
                     TransformNFAToRegex transformNFAToRegex = new TransformNFAToRegex();
                     Console.WriteLine();
