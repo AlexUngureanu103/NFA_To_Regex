@@ -19,7 +19,7 @@ namespace NFA_To_Regex
             ReduceTheAutomate();
 
             NFAAutomate.PrintAutomate();
-            return NFAAutomate.Transitions[0].Symbol;
+            return NFAAutomate.Transitions[0].Symbol.Replace(NFAAutomate.Lambda, '#');
         }
 
         private string GetFirstNonInitialAndNonFinalState()
@@ -87,6 +87,10 @@ namespace NFA_To_Regex
             {
                 newSymbol += '+' + transition2.Symbol;
             }
+
+            newSymbol = transition1.Symbol;
+            newSymbol += '+' + transition2.Symbol;
+
             if (string.IsNullOrEmpty(newSymbol))
                 newSymbol = NFAAutomate.Lambda + string.Empty;
             if (newSymbol.Length > 1)
