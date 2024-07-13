@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NFABase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lambda>955</Lambda>
+  <States>
+    <string>q0</string>
+    <string>q1</string>
+    <string>q2</string>
+  </States>
+  <Alphabet>
+    <string>a</string>
+    <string>b</string>
+    <string>c</string>
+    <string>d</string>
+    <string>e</string>
+  </Alphabet>
+  <Transitions>
+    <Transition>
+      <FromState>q0</FromState>
+      <ToState>q1</ToState>
+      <Symbol>a</Symbol>
+    </Transition>
+    <Transition>
+      <FromState>q1</FromState>
+      <ToState>q2</ToState>
+      <Symbol>b</Symbol>
+    </Transition>
+    <Transition>
+      <FromState>q2</FromState>
+      <ToState>q1</ToState>
+      <Symbol>c</Symbol>
+    </Transition>
+    <Transition>
+      <FromState>q1</FromState>
+      <ToState>q1</ToState>
+      <Symbol>e</Symbol>
+    </Transition>
+    <Transition>
+      <FromState>q1</FromState>
+      <ToState>q0</ToState>
+      <Symbol>d</Symbol>
+    </Transition>
+  </Transitions>
+  <StartState>q0</StartState>
+  <FinalStates>
+    <string>q2</string>
+  </FinalStates>
+</NFABase>

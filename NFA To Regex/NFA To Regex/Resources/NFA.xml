@@ -23,125 +23,130 @@
     <string>q23</string>
   </States>
   <Alphabet>
-    <char>97</char>
-    <char>98</char>
-    <char>99</char>
+    <string>a</string>
+    <string>b</string>
+    <string>c</string>
   </Alphabet>
   <Transitions>
     <Transition>
       <FromState>q0</FromState>
       <ToState>q1q2</ToState>
-      <Symbol>97</Symbol>
+      <Symbol>a</Symbol>
     </Transition>
     <Transition>
       <FromState>q1q2</FromState>
       <ToState>q3q4</ToState>
-      <Symbol>98</Symbol>
+      <Symbol>b</Symbol>
     </Transition>
     <Transition>
       <FromState>q3q4</FromState>
       <ToState>q5</ToState>
-      <Symbol>97</Symbol>
+      <Symbol>a</Symbol>
     </Transition>
     <Transition>
       <FromState>q6</FromState>
       <ToState>q7q8</ToState>
-      <Symbol>97</Symbol>
+      <Symbol>a</Symbol>
     </Transition>
     <Transition>
       <FromState>q7q8</FromState>
       <ToState>q9</ToState>
-      <Symbol>97</Symbol>
+      <Symbol>a</Symbol>
     </Transition>
     <Transition>
       <FromState>q10</FromState>
       <ToState>q0</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q10</FromState>
       <ToState>q6</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q5</FromState>
       <ToState>q11q22</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q9</FromState>
       <ToState>q11q22</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q12</FromState>
       <ToState>q13q14</ToState>
-      <Symbol>97</Symbol>
+      <Symbol>a</Symbol>
     </Transition>
     <Transition>
       <FromState>q13q14</FromState>
       <ToState>q15</ToState>
-      <Symbol>98</Symbol>
+      <Symbol>b</Symbol>
     </Transition>
     <Transition>
       <FromState>q16</FromState>
       <ToState>q17</ToState>
-      <Symbol>99</Symbol>
+      <Symbol>c</Symbol>
     </Transition>
     <Transition>
       <FromState>q18</FromState>
       <ToState>q16</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q17</FromState>
       <ToState>q19</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q18</FromState>
       <ToState>q19</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
+    </Transition>
+        <Transition>
+      <FromState>q17</FromState>
+      <ToState>q16</ToState>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q20</FromState>
       <ToState>q12</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q20</FromState>
       <ToState>q18</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q15</FromState>
       <ToState>q21</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q19</FromState>
       <ToState>q21</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q11q22</FromState>
       <ToState>q20</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q21</FromState>
       <ToState>q23</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q11q22</FromState>
       <ToState>q23</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
     <Transition>
       <FromState>q21</FromState>
       <ToState>q20</ToState>
-      <Symbol>35</Symbol>
+      <Symbol>#</Symbol>
     </Transition>
   </Transitions>
   <StartState>q10</StartState>
